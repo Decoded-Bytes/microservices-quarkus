@@ -6,6 +6,7 @@ import quarkus.projects.enums.ProjectStatus;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +36,35 @@ public class ProjectResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Project getProjectById(@PathParam("projectId") Long projectId) {
         Optional<Project> retrievedProject = projects.stream().filter(project -> project.getProjectId().equals(projectId)).findFirst();
-
         return retrievedProject.orElseThrow(() -> new NotFoundException("project with id: " + projectId + " not found!"));
-
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createProject(Project project) {
+        if (project.getProjectId() == null) {
+            throw new WebApplicationException("A project cannot be created without Project Id", 400);
+        }
+
+        projects.add(project);
+        return Response.status(201).entity(project).build();
+    }
+
+    @PUT
+    @Path("{projectId}/changeStatus")
+    public Project withdrawal(@PathParam("projectId") Long projectId, String status) {
+        Project project = getProjectById(projectId);
+        project.setProjectStatus(ProjectStatus.valueOf(status));
+        return project;
+    }
+
+    @DELETE
+    @Path("{projectId}")
+    public Response deleteProject(@PathParam("projectId") Long projectId) {
+        Project projectToRemove = getProjectById(projectId);
+        projects.remove(projectToRemove);
+        return Response.noContent().build();
+    }
+
 }
