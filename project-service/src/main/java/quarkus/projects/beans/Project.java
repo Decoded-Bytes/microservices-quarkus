@@ -1,7 +1,7 @@
 package quarkus.projects.beans;
 
 import lombok.Data;
-import quarkus.projects.ProjectStatus;
+import quarkus.projects.enums.ProjectStatus;
 
 @Data
 public class Project {

@@ -1,4 +1,4 @@
-package quarkus.projects;
+package quarkus.projects.enums;
 
 public enum ProjectStatus {
 

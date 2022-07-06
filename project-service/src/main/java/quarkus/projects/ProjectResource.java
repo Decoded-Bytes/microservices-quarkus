@@ -1,14 +1,12 @@
 package quarkus.projects;
 
 import quarkus.projects.beans.Project;
-import quarkus.projects.exception.ResourceNotFoundException;
+import quarkus.projects.enums.ProjectStatus;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.Provider;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
