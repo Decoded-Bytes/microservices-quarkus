@@ -3,16 +3,22 @@ package quarkus.projects.beans;
 import lombok.Data;
 import quarkus.projects.enums.ProjectStatus;
 
+import javax.persistence.*;
+
 @Data
+@Entity
+@NamedQuery(name = "Projects.findAll", query = "SELECT p FROM Project p ORDER BY p.projectId")
+@NamedQuery(name = "Projects.findByProjectId", query = "SELECT p FROM Project p WHERE p.projectId = :projectId ORDER BY p.projectId")
 public class Project {
 
     private Long projectId;
     private String projectName;
     private int durationInMonths;
     private int numResourcesAllocated;
-    private ProjectStatus projectStatus = ProjectStatus.NEW;
+    private String projectStatus;
+    private Long id;
 
-    public Project(Long projectId, String projectName, int durationInMonths, int numResourcesAllocated, ProjectStatus projectStatus) {
+    public Project(Long projectId, String projectName, int durationInMonths, int numResourcesAllocated, String projectStatus) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.durationInMonths = durationInMonths;
@@ -21,5 +27,16 @@ public class Project {
     }
 
     public Project() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
+    @SequenceGenerator(name = "projectsSequence", sequenceName = "projects_id_seq", allocationSize = 1, initialValue = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projectsSequence")
+    public Long getId() {
+        return id;
     }
 }
