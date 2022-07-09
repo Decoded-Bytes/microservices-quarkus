@@ -1,8 +1,12 @@
 package quarkus.projects;
 
+import io.quarkus.test.common.QuarkusTestResource;
+import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import quarkus.projects.beans.Project;
 
 import java.util.List;
@@ -16,6 +20,8 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 
 @QuarkusTest
+@QuarkusTestResource(H2DatabaseTestResource.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProjectResourceTest {
 
     @Test
