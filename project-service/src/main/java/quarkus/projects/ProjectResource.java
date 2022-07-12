@@ -22,7 +22,7 @@ public class ProjectResource {
     @Inject
     EntityManager entityManager;
 
-    @ConfigProperty(name = "client.default.name", defaultValue = "Decoded Bytes Default")
+    @ConfigProperty(name = "client.default.name")
     String clientName;
 
     @GET
