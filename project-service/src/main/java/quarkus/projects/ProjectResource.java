@@ -1,5 +1,6 @@
 package quarkus.projects;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import quarkus.projects.beans.Project;
 import quarkus.projects.enums.ProjectStatus;
 
@@ -18,19 +19,11 @@ import java.util.Optional;
 @Path("/projects")
 public class ProjectResource {
 
-    List<Project> projects = new ArrayList<>();
-
     @Inject
     EntityManager entityManager;
 
-    @PostConstruct
-    public void setup() {
-        projects.add(new Project(2366278L, "Sample Project 1", 5, 10, "NEW" ));
-        projects.add(new Project(4895443L, "Sample Project 2", 2, 8, "IN_PROGRESS" ));
-        projects.add(new Project(8943547L, "Sample Project 3", 8, 6, "IN_PROGRESS" ));
-        projects.add(new Project(3247839L, "Sample Project 4", 12, 5, "DELAYED" ));
-    }
-
+    @ConfigProperty(name = "client.default.name", defaultValue = "Decoded Bytes Default")
+    String clientName;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,6 +52,9 @@ public class ProjectResource {
         if (project.getProjectId() == null) {
             throw new WebApplicationException("A project cannot be created without Project Id", 400);
         }
+
+        if(null == project.getClientName())
+            project.setClientName(clientName);
 
         entityManager.persist(project);
         return Response.status(201).entity(project).build();

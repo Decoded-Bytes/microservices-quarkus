@@ -1,6 +1,7 @@
 package quarkus.projects.beans;
 
 import lombok.Data;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import quarkus.projects.enums.ProjectStatus;
 
 import javax.persistence.*;
@@ -17,13 +18,15 @@ public class Project {
     private int numResourcesAllocated;
     private String projectStatus;
     private Long id;
+    private String clientName;
 
-    public Project(Long projectId, String projectName, int durationInMonths, int numResourcesAllocated, String projectStatus) {
+    public Project(Long projectId, String projectName, int durationInMonths, int numResourcesAllocated, String projectStatus, String clientName) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.durationInMonths = durationInMonths;
         this.numResourcesAllocated = numResourcesAllocated;
         this.projectStatus = projectStatus;
+        this.clientName = clientName;
     }
 
     public Project() {
