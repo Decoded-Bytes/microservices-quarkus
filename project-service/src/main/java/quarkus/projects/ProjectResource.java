@@ -1,7 +1,10 @@
 package quarkus.projects;
 
+import io.smallrye.config.SmallRyeConfig;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import quarkus.projects.beans.Project;
+import quarkus.projects.config.ProjectServiceConfigMapping;
 import quarkus.projects.enums.ProjectStatus;
 
 import javax.annotation.PostConstruct;
@@ -22,8 +25,11 @@ public class ProjectResource {
     @Inject
     EntityManager entityManager;
 
-    @ConfigProperty(name = "client.default.name")
-    String clientName;
+//    @ConfigProperty(name = "client.default.name")
+//    String clientName;
+
+    @Inject
+    ProjectServiceConfigMapping projectServiceConfigMapping;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,8 +59,14 @@ public class ProjectResource {
             throw new WebApplicationException("A project cannot be created without Project Id", 400);
         }
 
+        SmallRyeConfig config = ConfigProvider.getConfig().unwrap(SmallRyeConfig.class);
+        ProjectServiceConfigMapping projectServiceConfigMapping = config.getConfigMapping(ProjectServiceConfigMapping.class);
+
+        System.out.println(">>>>>" + projectServiceConfigMapping.clientName().toString());
+
+
         if(null == project.getClientName())
-            project.setClientName(clientName);
+            project.setClientName(projectServiceConfigMapping.clientName());
 
         entityManager.persist(project);
         return Response.status(201).entity(project).build();
