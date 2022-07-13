@@ -31,3 +31,5 @@ project-service.iml
 microservices-quarkus/.idea/
 
 microservices-quarkus/project-service/.mvn/
+
+microservices-quarkus/budget-service/.mvn/
