@@ -2,9 +2,16 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.decodedbytes.quarkusmicro</groupId>
+  <groupId>com.decodedbytes</groupId>
   <artifactId>project-service</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+
+  <parent>
+    <artifactId>microservices-quarkus</artifactId>
+    <groupId>com.decodedbytes</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>

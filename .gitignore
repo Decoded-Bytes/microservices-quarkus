@@ -25,3 +25,9 @@ hs_err_pid*
 project-service/.dockerignore
 
 project-service.iml
+
+.DS_Store
+
+microservices-quarkus/.idea/
+
+microservices-quarkus/project-service/.mvn/
