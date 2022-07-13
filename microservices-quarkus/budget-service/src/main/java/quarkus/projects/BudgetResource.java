@@ -34,7 +34,7 @@ public class BudgetResource {
 
     @GET
     @Path("/{projectId}")
-    public Response getBudgetForProject(@PathParam("projectId") Long projectId) {
+    public Budget getBudgetForProject(@PathParam("projectId") Long projectId) {
 
         Budget budget = new Budget();
         budget.setProjectId(projectId);
@@ -42,7 +42,14 @@ public class BudgetResource {
         budget.setCurrentUtilization(getRandomNumber());
         budget.setStatus(calculateStatus(budget.getCurrentUtilization(), budget.getAllocatedBudget()));
 
-        return Response.status(200).entity(budget).build();
+        return budget;
+
+    }
+
+    @GET
+    @Path("/{projectId}/status")
+    public String getBudgetStatusForProject(@PathParam("projectId") Long projectId) {
+        return getBudgetForProject(projectId).getStatus();
 
     }
 }
