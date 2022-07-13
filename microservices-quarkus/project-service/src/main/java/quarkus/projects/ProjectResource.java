@@ -25,8 +25,8 @@ public class ProjectResource {
     @Inject
     EntityManager entityManager;
 
-//    @ConfigProperty(name = "client.default.name")
-//    String clientName;
+    @ConfigProperty(name = "budgetStatus", defaultValue = "GREEN")
+    String budgetStatus;
 
     @Inject
     ProjectServiceConfigMapping projectServiceConfigMapping;
@@ -43,7 +43,10 @@ public class ProjectResource {
     public Project getProjectById(@PathParam("projectId") Long projectId) {
 
         try {
-            return entityManager.createNamedQuery("Projects.findByProjectId", Project.class).setParameter("projectId", projectId).getSingleResult();
+            Project returnedProject =  entityManager.createNamedQuery("Projects.findByProjectId", Project.class).setParameter("projectId", projectId).getSingleResult();
+            returnedProject.setBudgetStatus(budgetStatus);
+
+            return returnedProject;
         } catch (NoResultException nre) {
             throw new WebApplicationException("Project with id: " + projectId + " does not exist.", 404);
         }
@@ -60,11 +63,9 @@ public class ProjectResource {
         }
 
         SmallRyeConfig config = ConfigProvider.getConfig().unwrap(SmallRyeConfig.class);
-        ProjectServiceConfigMapping projectServiceConfigMapping = config.getConfigMapping(ProjectServiceConfigMapping.class);
+        projectServiceConfigMapping = config.getConfigMapping(ProjectServiceConfigMapping.class);
 
-        System.out.println(">>>>>" + projectServiceConfigMapping.clientName().toString());
-
-
+        
         if(null == project.getClientName())
             project.setClientName(projectServiceConfigMapping.clientName());
 
@@ -74,7 +75,7 @@ public class ProjectResource {
 
     @PUT
     @Path("{projectId}/changeStatus")
-    public Project withdrawal(@PathParam("projectId") Long projectId, String status) {
+    public Project changeStatus(@PathParam("projectId") Long projectId, String status) {
         Project project;
         try {
             project = getProjectById(projectId);

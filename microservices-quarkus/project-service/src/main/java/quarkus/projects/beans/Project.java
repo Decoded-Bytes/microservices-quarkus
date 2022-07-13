@@ -19,14 +19,16 @@ public class Project {
     private String projectStatus;
     private Long id;
     private String clientName;
+    private String budgetStatus;
 
-    public Project(Long projectId, String projectName, int durationInMonths, int numResourcesAllocated, String projectStatus, String clientName) {
+    public Project(Long projectId, String projectName, int durationInMonths, int numResourcesAllocated, String projectStatus, String clientName, String budgetStatus) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.durationInMonths = durationInMonths;
         this.numResourcesAllocated = numResourcesAllocated;
         this.projectStatus = projectStatus;
         this.clientName = clientName;
+        this.budgetStatus = budgetStatus;
     }
 
     public Project() {
