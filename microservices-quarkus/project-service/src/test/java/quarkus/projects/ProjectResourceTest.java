@@ -8,6 +8,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import quarkus.projects.beans.Project;
+import quarkus.projects.services.WiremockBudgetService;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 
 @QuarkusTest
+@QuarkusTestResource(WiremockBudgetService.class)
 @QuarkusTestResource(H2DatabaseTestResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProjectResourceTest {
@@ -52,6 +54,9 @@ public class ProjectResourceTest {
 
         assertThat(retrievedProject.getProjectId(), equalTo(8943547L));
         assertThat(retrievedProject.getProjectName(), equalTo("Sample Project 3"));
+        assertThat(retrievedProject.getBudgetStatus(), equalTo("BLACK"));
     }
+
+
 
 }

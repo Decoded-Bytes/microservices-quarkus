@@ -3,9 +3,11 @@ package quarkus.projects;
 import io.smallrye.config.SmallRyeConfig;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import quarkus.projects.beans.Project;
 import quarkus.projects.config.ProjectServiceConfigMapping;
 import quarkus.projects.enums.ProjectStatus;
+import quarkus.projects.services.BudgetService;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -31,6 +33,10 @@ public class ProjectResource {
     @Inject
     ProjectServiceConfigMapping projectServiceConfigMapping;
 
+    @Inject
+    @RestClient
+    BudgetService budgetService;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Project> getAllProjects() {
@@ -44,7 +50,8 @@ public class ProjectResource {
 
         try {
             Project returnedProject =  entityManager.createNamedQuery("Projects.findByProjectId", Project.class).setParameter("projectId", projectId).getSingleResult();
-            returnedProject.setBudgetStatus(budgetStatus);
+            returnedProject.setBudgetStatus(budgetService.getBudgetStatusForProject(returnedProject.getProjectId()));
+            //returnedProject.setBudgetStatus(budgetStatus);
 
             return returnedProject;
         } catch (NoResultException nre) {
