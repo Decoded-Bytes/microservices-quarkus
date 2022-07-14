@@ -51,6 +51,8 @@ public class ProjectResource {
         try {
             Project returnedProject =  entityManager.createNamedQuery("Projects.findByProjectId", Project.class).setParameter("projectId", projectId).getSingleResult();
             returnedProject.setBudgetStatus(budgetService.getBudgetStatusForProject(returnedProject.getProjectId()));
+            System.out.println("Received Status >>> " + returnedProject.getBudgetStatus());
+            System.out.println("Received Project >>> " + returnedProject.toString());
             //returnedProject.setBudgetStatus(budgetStatus);
 
             return returnedProject;
